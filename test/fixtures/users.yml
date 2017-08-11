@@ -1,0 +1,4 @@
+michael:
+  name: Michael Jackson
+  email: michaeljackson@gmail.com
+  password_digest: <%= User.digest('password') %>
