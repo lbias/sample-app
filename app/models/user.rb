@@ -10,6 +10,9 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 }, allow_blank: true
 
   has_many :microposts, dependent: :destroy
+  has_many :active_relationships, class_name:  "Relationship",
+                                foreign_key: "follower_id",
+                                dependent:   :destroy
 
   class << self
     #returns the hash digest of the given string
@@ -75,7 +78,7 @@ class User < ApplicationRecord
   def feed
     Micropost.where("user_id = ?", id)
   end
-  
+
   private
 
   # Converts email to all lower-case.
