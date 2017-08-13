@@ -17,7 +17,7 @@ class User < ApplicationRecord
   has_many :passive_relationships, class_name:  "Relationship",
                                  foreign_key: "followed_id",
                                  dependent:   :destroy
-  has_many :followers, through: :passive_relationships, source: :follower                                 
+  has_many :followers, through: :passive_relationships, source: :follower
 
   class << self
     #returns the hash digest of the given string
@@ -78,10 +78,9 @@ class User < ApplicationRecord
     reset_sent_at < 2.hours.ago
   end
 
-  # defines a proto-feed
-  # see "following users" for the full implementation
+  # returns a user's status feed
   def feed
-    Micropost.where("user_id = ?", id)
+    Micropost.where("user_id IN (?) OR user_id = ?", following_ids, id)
   end
 
   # Follows a user.
